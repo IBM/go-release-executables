@@ -16,6 +16,12 @@ ln -s $GITHUB_WORKSPACE $PROJECT_ROOT
 cd $PROJECT_ROOT/${SUBDIR}
 go get -v ./...
 
+EXT=''
+
+if [ $GOOS == 'windows' ]; then
+EXT='.exe'
+fi
+
 if [ -z "${EXECUTABLE_NAME}" ]; then
   OUTFILE=${PROJECT_NAME}
 else 
@@ -23,10 +29,10 @@ else
 fi
 
 if [ -x "./build.sh" ]; then
-  OUTPUT=`./build.sh "${OUTFILE}" "${BUILD_OPTS}"`
+  COMPILED_FILES=`./build.sh "${OUTFILE}" "${BUILD_OPTS}"`
 else
   go build -o ${OUTFILE} "${BUILD_OPTS}"
-  COMPILED_FILES="${OUTFILE}"
+  COMPILED_FILES="${OUTFILE}${EXT}"
 fi
 
 echo ${COMPILED_FILES}
