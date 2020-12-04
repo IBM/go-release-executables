@@ -31,8 +31,8 @@ fi
 if [ -x "./build.sh" ]; then
   COMPILED_FILES=`./build.sh "${OUTFILE}" "${BUILD_OPTS}"`
 else
-  go build -o ${OUTFILE}${EXT} "${BUILD_OPTS}"
-  COMPILED_FILES="${OUTFILE}${EXT}"
+  go build -o ${OUTFILE} "${BUILD_OPTS}"
+  COMPILED_FILES="${OUTFILE}"
 fi
 
 echo ${COMPILED_FILES}
