@@ -29,7 +29,7 @@ jobs:
         SUBDIR: "subdir"
         EXECUTABLE_NAME: "exec1"
     - name: compile and release x86
-      uses: abhishekjog/go-release-executable@v4
+      uses: ibm/go-release-executables@v1.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GOARCH: amd64
