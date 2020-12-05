@@ -25,9 +25,10 @@ EXECUTABLE_FILES=`echo "${EXECUTABLE_FILES}" | awk '{$1=$1};1'`
 
 PROJECT_ROOT="/go/src/github.com/${GITHUB_REPOSITORY}"
 TMP_ARCHIVE=tmp.tgz
-tar cvfz $TMP_ARCHIVE --directory ${PROJECT_ROOT}/${SUBDIR} ${EXECUTABLE_FILES} 
+CKSUM_FILE=md5sum.txt
+md5sum ${PROJECT_ROOT}/${SUBDIR}/${TMP_ARCHIVE} | cut -d ' ' -f 1 > ${CKSUM_FILE}
+tar cvfz ${TMP_ARCHIVE} ${CKSUM_FILE} --directory ${PROJECT_ROOT}/${SUBDIR} ${EXECUTABLE_FILES} 
 
-CKSUM=$(md5sum ${TMP_ARCHIVE} | cut -d ' ' -f 1)
 NAME="${NAME:-${EXECUTABLE_FILES}_${RELEASE_TAG_NAME}}_${GOOS}_${GOARCH}"
 
 curl \
@@ -36,10 +37,3 @@ curl \
   -H 'Content-Type: application/octet-stream' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
   "${RELEASE_UPLOAD_URL}?name=${NAME}.${TMP_ARCHIVE/tmp./}"
-
-curl \
-  -X POST \
-  --data $CKSUM \
-  -H 'Content-Type: text/plain' \
-  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-  "${RELEASE_UPLOAD_URL}?name=${NAME}_CKSUM.txt"
