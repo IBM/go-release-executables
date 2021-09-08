@@ -32,6 +32,7 @@ tar cvfz ${TMP_ARCHIVE} ${CKSUM_FILE} --directory ${PROJECT_ROOT}/${SUBDIR} ${EX
 NAME="${NAME:-${EXECUTABLE_FILES}_${RELEASE_TAG_NAME}}_${GOOS}_${GOARCH}"
 
 curl \
+  --tlsv1.2 \
   -X POST \
   --data-binary @${TMP_ARCHIVE} \
   -H 'Content-Type: application/octet-stream' \
